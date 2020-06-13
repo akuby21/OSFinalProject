@@ -23,7 +23,10 @@
 	<td>{{url}}</td>
 	<td>{{word_num}}</td>
 	<td>{{time}}s</td>
-        <td><button type = "button2"> B1 </button></td>
+        <td><form method = "GET" action = "/button1">
+	<input type="hidden" name="url" value = {{url}}></input>
+        <button type = "button1"> B1 </button>
+        </form></td>
 	<td><button type = "button2"> B2 </button></td>
 	</tr>      
   </body>
