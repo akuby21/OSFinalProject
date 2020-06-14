@@ -25,6 +25,12 @@ def analyze():
 		t = round(end -start,2)
 		return render_template('analyze.html', url=URL,word_num = len(w),time = t)
 
+@app.route('/button1', methods = ['GET'])
+def button1():
+	URL = request.args.get('url')
+	w = s(URL)
+	return render_template('button1.html',W = w, size = len(w))
+
 def s(URL):
    frequency = {}
    splits = []
