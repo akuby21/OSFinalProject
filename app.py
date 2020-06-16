@@ -20,13 +20,27 @@ def index():
 
 @app.route('/analyze', methods=['GET'])
 def analyze():
+	if request.method == 'POST':
+		WordList = []
+		URL = []
+		ExecuteTime = []
+		f = request.files['FileName']
+		filename = secure_filename(f.filename)
+		urls = f.readlines()
+		for i in urls:
+			start = time.time()
+			i = i.decode('utf-8')
+			URL.append(i)
+			WordList.append(len(s(i)))
+			end = time.time()
+			ExecuteTime.append(round(end-start,2))
+		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime)
 	if request.method == 'GET':
-		start = time.time()
 		URL = request.args.get('url')
 		w = s(URL)
-		end = time.time()
 		t = round(end -start,2)
 		return render_template('analyze.html', url=URL,word_num = len(w),time = t)
+
 
 @app.route('/button1', methods = ['GET'])
 def button1():
