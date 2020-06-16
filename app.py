@@ -48,8 +48,10 @@ def analyze():
 @app.route('/button1', methods = ['GET'])
 def button1():
 	URL = request.args.get('url')
+	start = time.time()
 	w = s2(URL)
-	return render_template('button1.html',W = w)
+	end = time.time()
+	return render_template('button1.html',W = w,time = round(end-start,2))
 
 def s(URL):
 	frequency = {}
