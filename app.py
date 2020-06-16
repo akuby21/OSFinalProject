@@ -37,7 +37,9 @@ def analyze():
 		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime)
 	if request.method == 'GET':
 		URL = request.args.get('url')
+		start = time.time()
 		w = s(URL)
+		end = time.time()
 		t = round(end -start,2)
 		return render_template('analyze.html', num = 1,urls=URL,test1 = len(w),test2 = t)
 
