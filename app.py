@@ -18,7 +18,7 @@ app = Flask(__name__)
 def index():
 	return render_template('start.html')
 
-@app.route('/analyze', methods=['GET'])
+@app.route('/analyze', methods=['GET','POST'])
 def analyze():
 	if request.method == 'POST':
 		WordList = []
@@ -40,6 +40,8 @@ def analyze():
 		w = s(URL)
 		t = round(end -start,2)
 		return render_template('analyze.html', url=URL,word_num = len(w),time = t)
+
+
 
 
 @app.route('/button1', methods = ['GET'])
