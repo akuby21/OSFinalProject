@@ -39,7 +39,7 @@ def analyze():
 		URL = request.args.get('url')
 		w = s(URL)
 		t = round(end -start,2)
-		return render_template('analyze.html', url=URL,word_num = len(w),time = t)
+		return render_template('analyze.html', num = 1,urls=URL,test1 = len(w),test2 = t)
 
 
 
