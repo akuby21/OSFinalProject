@@ -28,8 +28,15 @@
                <input type="hidden" name="url" value = {{urls[item]}}></input>
                <button type = "button1"> B1 </button>
                </form>
-             <td>
+	    </td>
+            <td>
+            <form method = "GET" action = "/button2">
+	       {% for t in range(0, num) %}
+	       		<input type="hidden" name={{t}} value ={{urls[t]}}></input>
+               {% endfor %}
+	       <input type="hidden" name="main_url" value ={{urls[item]}}></input>
                <button type = "button2"> B2 </button>
+               </form>
              </td>
          </tr>
      {% endfor %}
