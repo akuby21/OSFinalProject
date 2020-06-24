@@ -53,6 +53,46 @@ def button1():
 	end = time.time()
 	return render_template('button1.html',W = w,time = round(end-start,2))
 
+@app.route('/button2', methods = ['GET'])
+def button2():
+	URLS = []
+	i = 0
+	temp1 = []
+	temp2 = []
+	up = 0
+	down1 = 0
+	down2 = 0
+	r = []
+	d_r = {}
+	txt_size = 0
+	text_size = 0
+	start = time.time()
+	while(1):
+		url = request.args.get(str(i))
+		if url == None:
+			break
+		URLS.append(url)
+		i += 1
+	main_url = request.args.get('main_url')
+	URLS.remove(main_url)
+	txt_size = len(URLS)
+	temp1 = s3(main_url)
+	for j in range(txt_size):	
+		temp2 = s3(URLS[j])
+		if(len(temp1) < len(temp2)):
+			text_size = len(temp1)
+		else:
+			text_size = len(temp2)
+		for i in range(text_size):
+			up += (temp1[i] * temp2[i])
+			down1 += (temp1[i] * temp1[i])
+			down2 += (temp2[i] * temp2[i])
+		r.append(round(up / math.sqrt(down1) / math.sqrt(down2) * 100,2))
+		d_r[URLS[j]] = r[j]
+	d_r = sorted(d_r.items(), key = operator.itemgetter(1),reverse = True)
+	end = time.time()
+	return render_template('button2.html', simi = d_r, main = main_url , size = txt_size, time = round(end - start,2))
+
 def s(URL):
 	frequency = {}
 	splits = []
@@ -117,6 +157,45 @@ def s2(URL):
       result.append(round(final[index],5))
       final[index] = 0
    return result
+
+def s3(URL):
+   frequency = {}
+   splits = []
+   sub_splits = []
+   final = []
+   result = []
+   res = requests.get(URL)
+   html = BeautifulSoup(res.content, "html.parser")
+   all_link = html.find_all("p")
+   total_sentance = 0
+   max_freq = 0
+   judge = 0
+   N = 0
+   for t in all_link:
+      total_sentance += 1
+      splits = re.sub('<sup.*?>.*?</sup>','',str(t),0)
+      splits = re.sub('<.+?>','',splits,0)
+      splits = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]','',splits).lower().split()
+      for i in splits:
+         try:
+            cnt = frequency[i]
+            frequency[i] = cnt + 1
+         except KeyError:
+            frequency[i] = 1
+   frequency = list(sorted(frequency.items(),key=operator.itemgetter(1),reverse = True))
+   for i in frequency:
+      if i[1] > max_freq :
+         max_freq = i[1]
+   for i in frequency:
+      judge = 0
+      for j in all_link:
+         sub_splits = re.sub('<sup.*?>.*?</sup>','',str(j),0)
+         sub_splits = re.sub('<.+?>','',sub_splits,0)
+         sub_splits = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]','',sub_splits).lower().split()
+         if i[0] in sub_splits:
+            judge += 1
+      final.append(0.5 * i[1] / max_freq * math.log10(total_sentance / judge))
+   return sorted(final)
 
 if __name__ == '__main__':
     app.run(debug=False,host ="127.0.0.1",port ="5000")
