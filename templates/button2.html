@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <title>Opject</title>
+
+  </head>
+
+  <body>
+
+   <h1></h1>
+
+   <table border="1" bordercolor="black" width ="500" height="300" align = "center" >
+
+   <tr bgcolor="skyblue" align ="center">
+
+   <p>
+
+   <td colspan = "19" span style="color:white">
+
+   {{main}}과 유사도</td>
+
+   </p>
+
+   </tr>
+
+   <tr align = "center" bgcolor="gray">
+
+   <td> TOP </td>
+
+   <td> 주소 </td>
+
+   <td> 유사도 </td>
+   {% for i in range(0,size)%}
+   <tr>
+   <td> {{i+1}} </td>
+   <td> {{simi[i][0]}} </td>
+   <td> {{simi[i][1]}} </td>
+   </tr>
+   {% endfor %}
+   <tr>
+   <td> 소요 시간 </td>
+   <td>{{time}}</td>
+   <td> </td>
+   </tr>
+   </table>
+
+  </body>
+
+</html>
