@@ -87,6 +87,7 @@ def button2():
 		URLS.append(url)
 		i += 1
 	main_url = request.args.get('main_url')
+	print(main_url)
 	#URLS.remove(main_url)
 	txt_size = len(URLS)
 	SEARCH = es.search(index="web",body={'from':0,'size':URLlength[main_url],'query':{'match':{'url':main_url}}})
@@ -95,10 +96,13 @@ def button2():
 	
 	for j in range(txt_size):	
 		temp2 = []		
+		up = 0
+		down1 = 0
+		down2 = 0		
 		SEARCH = es.search(index="web",body={'from':0,'size':URLlength[URLS[j]],'query':{'match':{'url':URLS[j]}}})
 		for result in SEARCH['hits']['hits']:
 			temp2.append(result['_source']['value'])
-		if(len(temp1) > len(temp2)):
+		if(len(temp1) < len(temp2)):
 			text_size = len(temp1)
 		else:
 			text_size = len(temp2)
@@ -106,7 +110,8 @@ def button2():
 			up += (temp1[i] * temp2[i])
 			down1 += (temp1[i] * temp1[i])
 			down2 += (temp2[i] * temp2[i])
-		r.append(round(up / math.sqrt(down1) / math.sqrt(down2) * 100,2))
+		NUM = round(up / math.sqrt(down1) / math.sqrt(down2) * 100,2)
+		r.append(NUM)
 		d_r[URLS[j]] = r[j]
 		
 	d_r = sorted(d_r.items(), key = operator.itemgetter(1),reverse = True)
