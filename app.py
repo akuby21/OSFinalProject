@@ -8,6 +8,7 @@ import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
 from werkzeug.utils import secure_filename
+from elasticsearch import Elasticsearch
 import time
 import math
 app = Flask(__name__)
@@ -94,6 +95,7 @@ def button2():
 	return render_template('button2.html', simi = d_r, main = main_url , size = txt_size, time = round(end - start,2))
 
 def s(URL):
+	n = 0
 	frequency = {}
 	splits = []
 	res = requests.get(URL)
@@ -111,6 +113,11 @@ def s(URL):
 				frequency[i] = 1
 
 	frequency = list(sorted(frequency.items(),key=operator.itemgetter(1),reverse = True))
+	for i in frequency:
+		doc = {'url':URL,'word':i[0],'frequency':i[1]}
+		res = es.index(index="web",doc_type='word',id=n,body=doc)
+		n = n + 1
+		print(res)
 	return frequency
 
 def s2(URL):
@@ -198,4 +205,5 @@ def s3(URL):
    return sorted(final)
 
 if __name__ == '__main__':
+    es = Elasticsearch()
     app.run(debug=False,host ="127.0.0.1",port ="5000")
