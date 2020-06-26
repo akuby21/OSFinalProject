@@ -1,34 +1,84 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<style type = "text/css">
+	#box1 {text-align : center;}
+table{
+width:60%
+height: 100px;
+margin : auto;
+text-align: center;
+font-size : 17pt;
+}
+</style>
+<title>HostSpace</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="HostSpace template project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles/bootstrap-4.1.2/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/OwlCarousel2-2.2.1/animate.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles/main_styles.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles/responsive.css') }}">
+</head>
+<body>
 
-<html lang="en" dir="ltr">
+<div class="super_container">
 
-  <head>
+   <!-- Header -->
 
-    <meta charset="utf-8">
+   <header class="header trans_400">
+      <div class="container">
+         <div class="row">
+            <div class="col">
+               <div class="header_content d-flex flex-row align-items-center justify-content-start trans_400">
+                  <div class="logo"><a href="#">Open<span>Source</span></a></div>
+             </div>
+            </div>
+         </div>
+	<div class="home_title" id = "box1">Web Analysis</div>
+      </div>
+   </header>
 
-    <title>Opject</title>
+   <!-- Home -->
 
-  </head>
+   <div class="home">
+      <div class="home_background"></div>
+      <div class="background_image background_city" style="background-image:url(static/css/images/city.png)"></div>
+      <div class="cloud cloud_1"><img src="static/css/images/cloud.png" alt=""></div>
+      <div class="cloud cloud_2"><img src="static/css/images/cloud.png" alt=""></div>
+      <div class="cloud cloud_3"><img src="static/css/images/cloud_full.png" alt=""></div>
+      <div class="cloud cloud_4"><img src="static/css/images/cloud.png" alt=""></div>
+      <div class="home_container">
+         <div class="container">
+            <div class="row">
+               <div class="col">
+                  <div class="home_content text-center">
+                     <div class="home_text"></div>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+	    <div class="col-lg-10 offset-lg-1">
+	    <div class="domain_search_form_container">
+	    <table border="1" bordercolor="black" width ="850" height="500" align = "center" >
 
-  <body>
-
-   <h1></h1>
-
-   <table border="1" bordercolor="black" width ="500" height="300" align = "center" >
-
-   <tr bgcolor="skyblue" align ="center">
+   <tr bgcolor="Indigo" align ="center">
 
    <p>
 
    <td colspan = "19" span style="color:white">
 
-   BUTTON 1</td>
+   단어빈도 top10</td>
 
    </p>
 
    </tr>
 
-   <tr align = "center" bgcolor="gray">
+   <tr align = "center" bgcolor="Blueviolet" style="color:white">
 
    <td> TOP </td>
 
@@ -40,132 +90,40 @@
 
    </tr>
 
-   <tr>
+   {%for i in range(0, 10)%}
+   <tr align = "center" bgcolor = "Azure" style = "color:black">
 
-   <td> 1 </td>
+   <td> {{i + 1}} </td>
 
-   <td> {{W[0]}} </td>
+   <td> {{W[3 * (i - 1)]}} </td>
 
-   <td> {{W[1]}} </td>
+   <td> {{W[3 * (i - 1) + 1]}} </td>
 
-   <td> {{W[2]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 2 </td>
-
-   <td> {{W[3]}} </td>
-
-   <td> {{W[4]}} </td>
-
-   <td> {{W[5]}} </td>
+   <td> {{W[3 * (i - 1) + 2]}} </td>
 
    </tr>
-
-   <tr>
-
-   <td> 3 </td>
-
-   <td> {{W[6]}} </td>
-
-   <td> {{W[7]}} </td>
-
-   <td> {{W[8]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 4 </td>
-
-   <td> {{W[9]}} </td>
-
-   <td> {{W[10]}} </td>
-
-   <td> {{W[11]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 5 </td>
-
-   <td> {{W[12]}} </td>
-
-   <td> {{W[13]}} </td>
-
-   <td> {{W[14]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 6 </td>
-
-   <td> {{W[15]}} </td>
-
-   <td> {{W[16]}} </td>
-
-   <td> {{W[17]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 7 </td>
-
-   <td> {{W[18]}} </td>
-
-   <td> {{W[19]}} </td>
-
-   <td> {{W[20]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 8 </td>
-
-   <td> {{W[21]}} </td>
-
-   <td> {{W[22]}} </td>
-
-   <td> {{W[23]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 9 </td>
-
-   <td> {{W[24]}} </td>
-
-   <td> {{W[25]}} </td>
-
-   <td> {{W[26]}} </td>
-
-   </tr>
-
-   <tr>
-
-   <td> 10 </td>
-
-   <td> {{W[27]}} </td>
-
-   <td> {{W[28]}} </td>
-
-   <td> {{W[29]}} </td>
-
-   </tr>
-
+   {% endfor %}
+  <tr align = "center" bgcolor = "Azure" style = "color:black">
    <td> 처리시간 </td>
 
    <td colspan="3"> {{time}} </td>
-
+   </tr>
    </table>
-
-  </body>
-
+         </div>
+      </div>
+   </div>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="styles/bootstrap-4.1.2/popper.js"></script>
+<script src="styles/bootstrap-4.1.2/bootstrap.min.js"></script>
+<script src="plugins/greensock/TweenMax.min.js"></script>
+<script src="plugins/greensock/TimelineMax.min.js"></script>
+<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="plugins/greensock/animation.gsap.min.js"></script>
+<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="plugins/progressbar/progressbar.min.js"></script>
+<script src="plugins/parallax-js-master/parallax.min.js"></script>
+<script src="js/custom.js"></script>
+</body>
 </html>
