@@ -42,7 +42,7 @@ def analyze():
 	if request.method == 'GET':
 		url = request.args.get('url')
 		start = time.time()
-		w = init(url)
+		w = init(url,0)
 		end = time.time()
 		t = round(end -start,2)
 		WordList.append(len(w))
