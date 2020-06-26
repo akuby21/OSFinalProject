@@ -1,32 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Opject</title>
-  </head>
-  <body>
-	<table border="1" bordercolor="black" width ="500" height="300" align = "center" >
-	   <tr bgcolor="skyblue" align ="center">
+<html lang="en">
+<head>
+<style type = "text/css">
+	#box1 {text-align : center;}
+table{
+width:60%
+height: 100px;
+margin : auto;
+text-align: center;
+font-size : 17pt;
+}
+</style>
+<title>HostSpace</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="HostSpace template project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles/bootstrap-4.1.2/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/OwlCarousel2-2.2.1/owl.carousel.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/OwlCarousel2-2.2.1/owl.theme.default.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/plugins/OwlCarousel2-2.2.1/animate.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles/main_styles.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles/responsive.css') }}">
+</head>
+<body>
+
+<div class="super_container">
+
+   <!-- Header -->
+
+   <header class="header trans_400">
+      <div class="container">
+         <div class="row">
+            <div class="col">
+               <div class="header_content d-flex flex-row align-items-center justify-content-start trans_400">
+                  <div class="logo"><a href="#">Open<span>Source</span></a></div>
+             </div>
+            </div>
+         </div>
+	<div class="home_title" id = "box1">Web Analysis</div>
+      </div>
+   </header>
+
+   <!-- Home -->
+
+   <div class="home">
+      <div class="home_background"></div>
+      <div class="background_image background_city" style="background-image:url(static/css/images/city.png)"></div>
+      <div class="cloud cloud_1"><img src="static/css/images/cloud.png" alt=""></div>
+      <div class="cloud cloud_2"><img src="static/css/images/cloud.png" alt=""></div>
+      <div class="cloud cloud_3"><img src="static/css/images/cloud_full.png" alt=""></div>
+      <div class="cloud cloud_4"><img src="static/css/images/cloud.png" alt=""></div>
+      <div class="home_container">
+         <div class="container">
+            <div class="row">
+               <div class="col">
+                  <div class="home_content text-center">
+                     <div class="home_text"></div>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+	    <div class="col-lg-10 offset-lg-1">
+	    <div class="domain_search_form_container">
+		<table border="1" bordercolor="black" width ="850" height="500" align = "center" >
+	   <tr bgcolor="Indigo" align ="center">
 	      <p><td colspan = "19" span style="color:white">
 	         URL 별 단어분석</td>
 	      </p>
 	   </tr>
-	   <tr align = "center" bgcolor="gray">
+	   <tr align = "center" bgcolor="Blueviolet" style="color:white">
 	      <th> 주소 </th>
 	      <th> 총 단어수 </th>
 	      <th> 처리시간 </th>
-	      <th> 버튼1 </th>
-        <th> 버튼2 </th>
+	      <th> 단어빈도 top10</th>
+        <th> URL 유사도 비교 </th>
 	   </tr>
      {% for item in range(0,num) %}
-         <tr>
+         <tr align = "center" bgcolor = "Azure" style="color:black">
              <td>{{urls[item]}}</td>
              <td>{{test1[item]}}</td>
              <td>{{test2[item]}}</td>
              <td>
                <form method = "GET" action = "/button1">
                <input type="hidden" name="url" value = {{urls[item]}}></input>
-               <button type = "button1"> B1 </button>
+               <button type = "button1" class="domain_search_button d-flex flex-row align-items-center justify-content-center" style = "color:black">Click</button>
                </form>
 	    </td>
             <td>
@@ -35,12 +94,28 @@
 	       		<input type="hidden" name={{t}} value ={{urls[t]}}></input>
                {% endfor %}
 	       <input type="hidden" name="main_url" value ={{urls[item]}}></input>
-               <button type = "button2"> B2 </button>
+               <button type = "button2" class="domain_search_button d-flex flex-row align-items-center justify-content-center" style = "color:black">Click</button>
                </form>
              </td>
          </tr>
      {% endfor %}
   </table>
-
-  </body>
+             
+         </div>
+      </div>
+   </div>
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="styles/bootstrap-4.1.2/popper.js"></script>
+<script src="styles/bootstrap-4.1.2/bootstrap.min.js"></script>
+<script src="plugins/greensock/TweenMax.min.js"></script>
+<script src="plugins/greensock/TimelineMax.min.js"></script>
+<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>
+<script src="plugins/greensock/animation.gsap.min.js"></script>
+<script src="plugins/greensock/ScrollToPlugin.min.js"></script>
+<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
+<script src="plugins/easing/easing.js"></script>
+<script src="plugins/progressbar/progressbar.min.js"></script>
+<script src="plugins/parallax-js-master/parallax.min.js"></script>
+<script src="js/custom.js"></script>
+</body>
 </html>
