@@ -104,7 +104,7 @@ def analyze():
 			end = time.time()
 			t = round(end -start,2)
 			ExecuteTime.append(t)
-		strings = "0=" + URL[0] + "&"
+		strings = "0=" + url + "&"
 		URLP.append(url)
 		return render_template('analyze.html', num = 1,urls=URLP,test1 = WordList,test2 = ExecuteTime, status = status,full_url = strings)
 
@@ -258,3 +258,4 @@ def init(URL,n):
 if __name__ == '__main__':
     es = Elasticsearch()
     app.run(debug=False,host ="127.0.0.1",port ="5000")
+
