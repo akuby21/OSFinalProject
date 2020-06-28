@@ -79,7 +79,8 @@ def analyze():
 				start = time.time()
 				w = init(url,0)
 				if (w == 0):
-					return render_template('analyze.html',num=1,urls=URL,test1=0,test2=0,status="실패");
+					strings = "0=" + url + "&"
+					return render_template('analyze.html',num=1,urls=URL,test1=0,test2=0,status="실패",full_url = strings);
 				end = time.time()
 				t = round(end -start,2)
 				WordList.append(len(w))
@@ -102,7 +103,8 @@ def analyze():
 			end = time.time()
 			t = round(end -start,2)
 			ExecuteTime.append(t)
-		return render_template('analyze.html', num = 1,urls=url,test1 = WordList,test2 = ExecuteTime, status = status)
+		strings = "0=" + URL[0] + "&"
+		return render_template('analyze.html', num = 1,urls=url,test1 = WordList,test2 = ExecuteTime, status = status,full_url = strings)
 
 @app.route('/button1', methods = ['GET'])
 def button1():
