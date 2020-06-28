@@ -222,7 +222,7 @@ section
 .super_container
 {
 	width: 100%;
-	overflow: hidden;
+	overflow: visible;
 }
 .prlx_parent
 {
