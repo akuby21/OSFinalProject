@@ -71,6 +71,7 @@ def analyze():
 		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime,status = status,full_url = strings)
 	if request.method == 'GET':
 		status = []
+		URLP = []
 		url = request.args.get('url')
 		print(is_valid_url(url))
 		if(is_valid_url(url)):
@@ -104,7 +105,8 @@ def analyze():
 			t = round(end -start,2)
 			ExecuteTime.append(t)
 		strings = "0=" + URL[0] + "&"
-		return render_template('analyze.html', num = 1,urls=url,test1 = WordList,test2 = ExecuteTime, status = status,full_url = strings)
+		URLP.append(url)
+		return render_template('analyze.html', num = 1,urls=URLP,test1 = WordList,test2 = ExecuteTime, status = status,full_url = strings)
 
 @app.route('/button1', methods = ['GET'])
 def button1():
