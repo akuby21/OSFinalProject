@@ -102,7 +102,7 @@ def analyze():
 			end = time.time()
 			t = round(end -start,2)
 			ExecuteTime.append(t)
-		return render_template('analyze.html', num = 1,urls=URL,test1 = WordList,test2 = ExecuteTime, status = status)
+		return render_template('analyze.html', num = 1,urls=url,test1 = WordList,test2 = ExecuteTime, status = status)
 
 @app.route('/button1', methods = ['GET'])
 def button1():
