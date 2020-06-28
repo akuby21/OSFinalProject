@@ -76,6 +76,7 @@ font-size : 17pt;
 	      <th> 처리시간 </th>
 	      <th> 단어빈도 top10</th>
         <th> URL 유사도 비교 </th>
+	<th> 처리상태 </th>
 	   </tr>
      {% for item in range(0,num) %}
          <tr align = "center" bgcolor = "Azure" style="color:black">
@@ -97,6 +98,7 @@ font-size : 17pt;
                <button type = "button2" class="domain_search_button d-flex flex-row align-items-center justify-content-center" style = "color:black">Click</button>
                </form>
              </td>
+	     <td>{{status[item]}}</td>
          </tr>
      {% endfor %}
   </table>
