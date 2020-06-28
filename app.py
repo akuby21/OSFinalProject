@@ -30,7 +30,7 @@ def analyze():
 	idNum = 0
 	WordList = []
 	ExecuteTime = []
-
+	str = ""
 	if request.method == 'POST':
 		status = []
 		f = request.files['FileName']
@@ -64,6 +64,10 @@ def analyze():
 			for j in range(i+1 , len(urls)):
 				if(urls[i] == urls[j]):
 					status[j] = "중복"
+		for i in URL:
+			str = str + i + "&"
+		str = str[:-1]
+		print(str)
 		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime,status = status)
 	if request.method == 'GET':
 		status = []
@@ -185,6 +189,7 @@ def button2():
 				non_overlap_status.append(status[j][1])
 				JUDGE = 1
 	end = time.time()
+
 	return render_template('button2.html', simi = d_r, main = main_url , size = len(d_r), time = round(end - start,2),status = non_overlap_status)
 
 def is_valid_url(url):
