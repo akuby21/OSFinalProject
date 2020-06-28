@@ -30,7 +30,7 @@ def analyze():
 	idNum = 0
 	WordList = []
 	ExecuteTime = []
-	
+
 	if request.method == 'POST':
 		status = []
 		f = request.files['FileName']
@@ -40,12 +40,26 @@ def analyze():
 			start = time.time()
 			i = i.decode('utf-8').rstrip()
 			URL.append(i)
-			WordList.append(len(init(i,idNum)))
-			end = time.time()
-			ExecuteTime.append(round(end-start,2))
-			idNum = idNum + 1	
-			status.append("성공")
-			
+
+			if(is_valid_url(i)):
+				try:
+					RES = urlopen(i)
+					w = init(i,idNum)
+					end = time.time()
+					WordList.append(len(w))
+					status.append("성공")
+					ExecuteTime.append(round(end-start,2))
+				except HTTPError as e:
+					end = time.time()
+					WordList.append(0);
+					status.append("실패")
+					ExecuteTime.append(round(end-start,2))
+			else:
+				end = time.time()
+				WordList.append(0);
+				status.append("실패")
+				ExecuteTime.append(round(end-start,2))
+			idNum = idNum + 1
 		for i in range(len(urls)) :
 			for j in range(i+1 , len(urls)):
 				if(urls[i] == urls[j]):
@@ -54,23 +68,26 @@ def analyze():
 	if request.method == 'GET':
 		status = []
 		url = request.args.get('url')
-		if(re.search("https://",url)):
+		print(is_valid_url(url))
+		if(is_valid_url(url)):
 			try:
-				RES = urlopen(url)	
+				RES = urlopen(url)
 				start = time.time()
 				w = init(url,0)
+				if (w == 0):
+					return render_template('analyze.html',num=1,urls=URL,test1=0,test2=0,status="실패");
 				end = time.time()
 				t = round(end -start,2)
 				WordList.append(len(w))
 				URL.append(url)
-				status.append("성공")	
+				status.append("성공")
 				ExecuteTime.append(t)
 			except HTTPError as e:
 				start = time.time()
 				URL.append(url)
 				status.append("실패")
 				WordList = []
-				end = time.time()			
+				end = time.time()
 				t = round(end -start,2)
 				ExecuteTime.append(t)
 		else:
@@ -78,7 +95,7 @@ def analyze():
 			URL.append(url)
 			status.append("실패")
 			WordList = []
-			end = time.time()			
+			end = time.time()
 			t = round(end -start,2)
 			ExecuteTime.append(t)
 		return render_template('analyze.html', num = 1,urls=URL,test1 = WordList,test2 = ExecuteTime, status = status)
@@ -89,7 +106,7 @@ def button1():
 	CONTER = 1;
 	URL = request.args.get('url')
 	start = time.time()
-	
+
 	search = es.search(index="web",body={'from':0,'size':URLlength[URL],'query':{'match':{'url':URL}}})
 	for result in search['hits']['hits']:
 		w.append(result['_source']['wword'])
@@ -141,11 +158,11 @@ def button2():
 				status[j][1] = "메인과중복"
 	for result in SEARCH['hits']['hits']:
 		temp1.append(result['_source']['value'])
-	for j in range(txt_size):	
-		temp2 = []		
+	for j in range(txt_size):
+		temp2 = []
 		up = 0
 		down1 = 0
-		down2 = 0			
+		down2 = 0
 		SEARCH = es.search(index="web",body={'from':0,'size':URLlength[URLS[j]],'query':{'match':{'url':URLS[j]}}})
 		for result in SEARCH['hits']['hits']:
 			temp2.append(result['_source']['value'])
@@ -166,9 +183,19 @@ def button2():
 		for j in range(txt_size):
 			if((JUDGE == 0) and (d_r[i][0] == status[j][0])):
 				non_overlap_status.append(status[j][1])
-				JUDGE = 1		
+				JUDGE = 1
 	end = time.time()
 	return render_template('button2.html', simi = d_r, main = main_url , size = len(d_r), time = round(end - start,2),status = non_overlap_status)
+
+def is_valid_url(url):
+   regex = re.compile(
+      r'^https?://'  # http:// or https://
+      r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+[A-Z]{2,6}\.?|'  # domain...
+      r'localhost|'  # localhost...
+      r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+      r'(?::\d+)?'  # optional port
+      r'(?:/?|[/?]\S+)$', re.IGNORECASE)
+   return url is not None and regex.search(url)
 
 def init(URL,n):
    splits = []
@@ -178,7 +205,8 @@ def init(URL,n):
    res = requests.get(URL)
    frequency = {}
    html = BeautifulSoup(res.content, "html.parser")
-
+   if html == None:
+	   return 0;
    all_link = html.find_all("p")
    total_sentance = 0
    max_freq = 0
