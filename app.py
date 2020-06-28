@@ -11,12 +11,16 @@ from werkzeug.utils import secure_filename
 from elasticsearch import Elasticsearch
 import time
 import math
+import urllib
+from urllib.request import urlopen
+from urllib.error import URLError, HTTPError
 app = Flask(__name__)
 list_w = []
 freq = []
 results = []
 URLlength = {}
 URL = []
+URL_form = ["https://"]
 @app.route('/')
 def index():
 	return render_template('start.html')
@@ -26,7 +30,9 @@ def analyze():
 	idNum = 0
 	WordList = []
 	ExecuteTime = []
+	
 	if request.method == 'POST':
+		status = []
 		f = request.files['FileName']
 		filename = secure_filename(f.filename)
 		urls = f.readlines()
@@ -37,18 +43,45 @@ def analyze():
 			WordList.append(len(init(i,idNum)))
 			end = time.time()
 			ExecuteTime.append(round(end-start,2))
-			idNum = idNum + 1
-		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime)
+			idNum = idNum + 1	
+			status.append("성공")
+			
+		for i in range(len(urls)) :
+			for j in range(i+1 , len(urls)):
+				if(urls[i] == urls[j]):
+					status[j] = "중복"
+		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime,status = status)
 	if request.method == 'GET':
+		status = []
 		url = request.args.get('url')
-		start = time.time()
-		w = init(url,0)
-		end = time.time()
-		t = round(end -start,2)
-		WordList.append(len(w))
-		URL.append(url)
-		ExecuteTime.append(t)
-		return render_template('analyze.html', num = 1,urls=URL,test1 = WordList,test2 = ExecuteTime)
+		if(re.search("https://",url)):
+			try:
+				RES = urlopen(url)	
+				start = time.time()
+				w = init(url,0)
+				end = time.time()
+				t = round(end -start,2)
+				WordList.append(len(w))
+				URL.append(url)
+				status.append("성공")	
+				ExecuteTime.append(t)
+			except HTTPError as e:
+				start = time.time()
+				URL.append(url)
+				status.append("실패")
+				WordList = []
+				end = time.time()			
+				t = round(end -start,2)
+				ExecuteTime.append(t)
+		else:
+			start = time.time()
+			URL.append(url)
+			status.append("실패")
+			WordList = []
+			end = time.time()			
+			t = round(end -start,2)
+			ExecuteTime.append(t)
+		return render_template('analyze.html', num = 1,urls=URL,test1 = WordList,test2 = ExecuteTime, status = status)
 
 @app.route('/button1', methods = ['GET'])
 def button1():
@@ -59,7 +92,6 @@ def button1():
 	
 	search = es.search(index="web",body={'from':0,'size':URLlength[URL],'query':{'match':{'url':URL}}})
 	for result in search['hits']['hits']:
-		print(CONTER)
 		w.append(result['_source']['wword'])
 		w.append(result['_source']['frequency'])
 		w.append(result['_source']['value'])
@@ -79,6 +111,10 @@ def button2():
 	d_r = {}
 	txt_size = 0
 	text_size = 0
+	status = []
+	non_overlap_status = []
+	overlap_size = 0
+	JUDGE = 0
 	start = time.time()
 	while(1):
 		url = request.args.get(str(i))
@@ -87,18 +123,29 @@ def button2():
 		URLS.append(url)
 		i += 1
 	main_url = request.args.get('main_url')
-	print(main_url)
-	#URLS.remove(main_url)
+	URLS.remove(main_url)
 	txt_size = len(URLS)
 	SEARCH = es.search(index="web",body={'from':0,'size':URLlength[main_url],'query':{'match':{'url':main_url}}})
+	for i in range(txt_size) :
+		status.append([])
+		status[i].append(URLS[i])
+		status[i].append("성공")
+	for i in range(txt_size) :
+		for j in range(i+1 , txt_size):
+			if(status[i][0] == status[j][0]):
+				status[i][1] = "중복"
+				status[j][1] = "중복"
+			if(status[i][0] == main_url):
+				status[i][1] = "메인과중복"
+			if(status[j][0] == main_url):
+				status[j][1] = "메인과중복"
 	for result in SEARCH['hits']['hits']:
 		temp1.append(result['_source']['value'])
-	
 	for j in range(txt_size):	
 		temp2 = []		
 		up = 0
 		down1 = 0
-		down2 = 0		
+		down2 = 0			
 		SEARCH = es.search(index="web",body={'from':0,'size':URLlength[URLS[j]],'query':{'match':{'url':URLS[j]}}})
 		for result in SEARCH['hits']['hits']:
 			temp2.append(result['_source']['value'])
@@ -113,10 +160,15 @@ def button2():
 		NUM = round(up / math.sqrt(down1) / math.sqrt(down2) * 100,2)
 		r.append(NUM)
 		d_r[URLS[j]] = r[j]
-		
 	d_r = sorted(d_r.items(), key = operator.itemgetter(1),reverse = True)
+	for i in range(len(d_r)):
+		JUDGE = 0
+		for j in range(txt_size):
+			if((JUDGE == 0) and (d_r[i][0] == status[j][0])):
+				non_overlap_status.append(status[j][1])
+				JUDGE = 1		
 	end = time.time()
-	return render_template('button2.html', simi = d_r, main = main_url , size = txt_size, time = round(end - start,2))
+	return render_template('button2.html', simi = d_r, main = main_url , size = len(d_r), time = round(end - start,2),status = non_overlap_status)
 
 def init(URL,n):
    splits = []
@@ -162,14 +214,10 @@ def init(URL,n):
       index = final.index(max(final))
       doc = {'url':URL,'wword':frequency[index][0],'frequency':frequency[index][1],'value':round(final[index],5)}
       res = es.index(index="web",doc_type='word',body=doc)
-      print(res)
       final[index] = 0
    URLlength[URL] = len(frequency)
    return frequency
 
 if __name__ == '__main__':
     es = Elasticsearch()
-    #if es.indices.exists(index="web"):
-    #    es.indices.delete(index="web")
-    #print(es.indices.create(index="web"))    
     app.run(debug=False,host ="127.0.0.1",port ="5000")
