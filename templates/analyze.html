@@ -86,8 +86,10 @@ font-size : 17pt;
              <td>
                <form method = "GET" action = "/button1">
                <input type="hidden" name="url" value = {{urls[item]}}></input>
+		<a href="pop" onclick="window.open('http://127.0.0.1:5000/button1?url={{urls[item]}}', '_blank', 'width=400px,height=400px,toolbars=no,scrollbars=no'); return false;">
                <button type = "button1" class="domain_search_button d-flex flex-row align-items-center justify-content-center" style = "color:black">Click</button>
-               </form>
+		</a>               
+		</form>
 	    </td>
             <td>
             <form method = "GET" action = "/button2">
@@ -95,7 +97,9 @@ font-size : 17pt;
 	       		<input type="hidden" name={{t}} value ={{urls[t]}}></input>
                {% endfor %}
 	       <input type="hidden" name="main_url" value ={{urls[item]}}></input>
+		<a href="pop" onclick="window.open('http://127.0.0.1:5000/button2?{{full_url}}main_url={{urls[item]}}', '_blank', 'width=400px,height=400px,toolbars=no,scrollbars=no'); return false;">
                <button type = "button2" class="domain_search_button d-flex flex-row align-items-center justify-content-center" style = "color:black">Click</button>
+		</a>
                </form>
              </td>
 	     <td>{{status[item]}}</td>
