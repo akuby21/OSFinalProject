@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>HostSpace</title>
+<title>OpenSource Final Project</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="description" content="HostSpace template project">
@@ -25,7 +25,7 @@
          <div class="row">
             <div class="col">
                <div class="header_content d-flex flex-row align-items-center justify-content-start trans_400">
-                  <div class="logo"><a href="#">Open<span>Source</span></a></div>
+                  <div class="logo"><a href="http://127.0.0.1:5000/">Open<span>Source</span></a></div>
                </div>
             </div>
          </div>
@@ -64,11 +64,16 @@
 			</div>
                         <button type = "submit" class="domain_search_button d-flex flex-row align-items-center justify-content-center"><img src="static/css/images/search.png" alt="">Search</button>
                      	</form>
-			
+
 			<form method="POST" action = "/analyze" enctype="multipart/form-data">
-                        <input type = "file" name="FileName" style="font-size: 20px;" />
-                        <input type = "submit" style="font-size: 20px;" value = "파일 제출"></input>
-                  	</form>
+
+
+                        <div class="filebox" name="FileName" style="border-radius: :1.0em;padding:15px 15px;font-size:25px;"/>
+                          <label for="ex_file">업로드</label>
+                          <input type="file" id="ex_file">
+                        </div>
+                        <button type = "submit" class="domain_search_button d-flex flex-row align-items-center justify-content-center" style="float:center"><img src="static/css/images/search.png" alt="">Submit</button>
+                    </form>
                   </div>
                </div>
             </div>
