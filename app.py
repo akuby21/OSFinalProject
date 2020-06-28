@@ -21,6 +21,7 @@ results = []
 URLlength = {}
 URL = []
 URL_form = ["https://"]
+es = Elasticsearch()
 @app.route('/')
 def index():
 	return render_template('start.html')
@@ -256,6 +257,5 @@ def init(URL,n):
    return frequency
 
 if __name__ == '__main__':
-    es = Elasticsearch()
     app.run(debug=False,host ="127.0.0.1",port ="5000")
 
