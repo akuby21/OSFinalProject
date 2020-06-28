@@ -30,7 +30,8 @@ def analyze():
 	idNum = 0
 	WordList = []
 	ExecuteTime = []
-	str = ""
+	ex_url = []
+	strings = ""
 	if request.method == 'POST':
 		status = []
 		f = request.files['FileName']
@@ -46,6 +47,7 @@ def analyze():
 					RES = urlopen(i)
 					w = init(i,idNum)
 					end = time.time()
+					ex_url.append(i)
 					WordList.append(len(w))
 					status.append("성공")
 					ExecuteTime.append(round(end-start,2))
@@ -64,11 +66,9 @@ def analyze():
 			for j in range(i+1 , len(urls)):
 				if(urls[i] == urls[j]):
 					status[j] = "중복"
-		for i in URL:
-			str = str + i + "&"
-		str = str[:-1]
-		print(str)
-		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime,status = status)
+		for i in range(len(ex_url)):
+			strings += repr(i)+"="+str(ex_url[i])+"&"
+		return render_template('analyze.html',num = len(WordList),urls =URL,test1 = WordList,test2 = ExecuteTime,status = status,full_url = strings)
 	if request.method == 'GET':
 		status = []
 		url = request.args.get('url')
