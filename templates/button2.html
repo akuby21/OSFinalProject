@@ -85,16 +85,24 @@ font-size : 17pt;
    <td> 주소 </td>
 
    <td> 유사도 </td>
+   <td> 처리상태 </td>
+   {%if (size == 0)%}
+   <tr align = "center" bgcolor = "Azure" style = "color:black">
+   <td colspan = "4">비교 할 파일이 존재하지 않습니다</td>
+   </tr>
+   {%else%}
    {% for i in range(0,size)%}
   <tr align = "center" bgcolor = "Azure" style = "color:black">
    <td> {{i+1}} </td>
    <td> {{simi[i][0]}} </td>
    <td> {{simi[i][1]}} </td>
+   <td> {{status[i]}} </td>
    </tr>
    {% endfor %}
    <tr align = "center" bgcolor = "Azure" style = "color:black">
    <td> 처리시간 </td>
-   <td colspan = "3">{{time}}</td>
+   <td colspan = "4">{{time}}</td>
+   {% endif%}
    </tr>
    </table>
              
